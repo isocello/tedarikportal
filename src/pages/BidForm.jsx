@@ -1,129 +1,32 @@
-import React, { useState } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
-
-export default function BidForm() {
-  const { tenderId } = useParams()
-  const navigate = useNavigate()
-
-  const [step, setStep] = useState(1)
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [applicationNumber, setApplicationNumber] = useState('')
-  const [name, setName] = useState('')
-  const [phone, setPhone] = useState('')
-  const [bidValue, setBidValue] = useState('')
-  const [receiptFile, setReceiptFile] = useState(null)
-
-  // Generate application number on step 2 submit
-  const generateApplicationNumber = () => {
-    return 'APP-' + Math.floor(100000 + Math.random() * 900000)
-  }
-
-  const nextStep = () => {
-    if (step === 2 && !applicationNumber) {
-      setApplicationNumber(generateApplicationNumber())
-    }
-    setStep(step + 1)
-  }
-  const prevStep = () => setStep(step - 1)
-
-  const handleSubmit = () => {
-    alert('Bid submitted! (Functionality not implemented yet)')
-    navigate('/tenders')
-  }
-
-  return (
-    <div>
-      <h2>Bid for Tender ID: {tenderId}</h2>
-
-      {step === 1 && (
-        <div>
-          <p>Step 1: Confirm Tender Selection</p>
-          <button onClick={nextStep}>Continue</button>
-        </div>
-      )}
-
-      {step === 2 && (
-        <div>
-          <p>Step 2: Enter Email and Password</p>
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-          />
-          <br />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-          />
-          <br />
-          <p>Your Application Number: {applicationNumber || 'Will generate on continue'}</p>
-          <button onClick={prevStep}>Back</button>{' '}
-          <button onClick={nextStep} disabled={!email || !password}>
-            Continue
-          </button>
-        </div>
-      )}
-
-      {step === 3 && (
-        <div>
-          <p>Step 3: Enter Personal Details</p>
-          <input
-            placeholder="Name"
-            value={name}
-            onChange={e => setName(e.target.value)}
-          />
-          <br />
-          <input
-            placeholder="Phone"
-            value={phone}
-            onChange={e => setPhone(e.target.value)}
-          />
-          <br />
-          <button onClick={prevStep}>Back</button>{' '}
-          <button onClick={nextStep} disabled={!name || !phone}>
-            Continue
-          </button>
-        </div>
-      )}
-
-      {step === 4 && (
-        <div>
-          <p>Step 4: Enter Bid Value</p>
-          <input
-            type="number"
-            placeholder="Bid Value"
-            value={bidValue}
-            onChange={e => setBidValue(e.target.value)}
-          />
-          <br />
-          <button onClick={prevStep}>Back</button>{' '}
-          <button onClick={nextStep} disabled={!bidValue}>
-            Continue
-          </button>
-        </div>
-      )}
-
-      {step === 5 && (
-        <div>
-          <p>Step 5: Payment (Bank Transfer Only)</p>
-          <p>
-            Credit card payments are disabled. Please upload your bank transfer receipt.
-          </p>
-          <input
-            type="file"
-            onChange={e => setReceiptFile(e.target.files[0])}
-          />
-          <br />
-          <button onClick={prevStep}>Back</button>{' '}
-          <button onClick={handleSubmit} disabled={!receiptFile}>
-            Submit Bid
-          </button>
-        </div>
-      )}
+{step === 2 && (
+  <div className="max-w-md mx-auto bg-white p-6 rounded shadow space-y-4">
+    <p className="text-xl font-semibold text-primaryGreen mb-4">Step 2: Enter Email and Password</p>
+    <input
+      type="email"
+      placeholder="Email"
+      value={email}
+      onChange={(e) => setEmail(e.target.value)}
+      className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primaryGreen"
+    />
+    <input
+      type="password"
+      placeholder="Password"
+      value={password}
+      onChange={(e) => setPassword(e.target.value)}
+      className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primaryGreen"
+    />
+    <p>Your Application Number: <span className="font-semibold">{applicationNumber || "Will generate on continue"}</span></p>
+    <div className="flex justify-between">
+      <button onClick={prevStep} className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400 transition">
+        Back
+      </button>
+      <button
+        onClick={nextStep}
+        disabled={!email || !password}
+        className="bg-primaryGreen disabled:opacity-50 text-white px-4 py-2 rounded hover:bg-darkGreen transition"
+      >
+        Continue
+      </button>
     </div>
-  )
-}
+  </div>
+)}
